@@ -1,5 +1,4 @@
-#ifndef VEC3_H
-#define VEC3_H
+#pragma once
 
 #include <cmath>
 #include <iostream>
@@ -41,6 +40,18 @@ public:
 
   double length() const {
     return sqrt(length_squared());
+  }
+
+  static vec3 random() {
+    return vec3(random_double(), random_double(), random_double());
+  }
+
+  static vec3 random(double min, double max) {
+    return vec3(
+      random_double(min, max),
+      random_double(min, max),
+      random_double(min, max)
+    );
   }
 };
 
@@ -97,4 +108,25 @@ inline vec3 unit_vector(vec3 v) {
   return v / v.length();
 }
 
-#endif
+// Get a random vector in the unit hemisphere
+inline vec3 random_in_unit_sphere() {
+  // Just keep trying until we get one in the sphere because the actual math is hard
+  while (true) {
+    vec3 r = vec3::random(-1, 1);
+    if (r.length_squared() < 1) {
+      return r;
+    }
+  }
+}
+
+inline vec3 random_unit_vector() {
+  return unit_vector(random_in_unit_sphere());
+}
+
+inline vec3 random_on_hemisphere(const vec3& normal) {
+  vec3 on_unit_sphere = random_unit_vector();
+  if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+    return on_unit_sphere;
+  else
+    return -on_unit_sphere;
+}
