@@ -19,7 +19,7 @@ public:
   vec3 top_left_pixel;
   vec3 first_pixel_center;
   int max_bounces = 60;
-  int samples_per_pixel = 150;
+  int samples_per_pixel = 50;
 
   camera(double aspect_ratio, int img_width) : aspect_ratio(aspect_ratio), img_width(img_width) {
     img_height = static_cast<int>(img_width / aspect_ratio);
